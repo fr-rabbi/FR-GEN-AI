@@ -35,15 +35,8 @@ jobs:
             "platforms;android-35" \
             "build-tools;35.0.0"
 
-      - name: Build APK
-        run: |
-          if [ ! -f gradlew ]; then
-            echo "ERROR: gradlew missing"
-            ls -la
-            exit 1
-          fi
-          chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+            - name: Build APK
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         if: success()
