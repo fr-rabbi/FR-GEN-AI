@@ -2,7 +2,7 @@
 
 name: Build FR GEN AI APK
 
-on:
+"on":
   workflow_dispatch:
 
 jobs:
