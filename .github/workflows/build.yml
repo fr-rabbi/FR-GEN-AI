@@ -1,38 +1,42 @@
 
 name: Build FR GEN AI APK
 
-"on": [push, workflow_dispatch]
+"on":
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    name: Test Build Environment
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Check Java
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - name: Test
-        run: echo "Build environment ready"
-        
 
-- name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Check project
+      - name: Verify Java
         run: |
-          echo "GitHub Actions is ready."
+          java -version
+          javac -version
+
+      - name: Check Project Files
+        run: |
+          echo "FR GEN AI project"
+          echo "Repository files:"
           ls -la
 
-      - name: Save build status
+      - name: Test Successful
         run: |
-          mkdir -p output
-          echo "Android build environment ready. Project source required." > output/status.txt
-
-      - name: Upload status
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-status
-          path: output/status.txt
+          echo "Java environment is ready!"
+          echo "Next step: configure Android APK build."
           
