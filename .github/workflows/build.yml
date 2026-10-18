@@ -1,24 +1,23 @@
 
-
 name: Build FR GEN AI APK
 
-"on":
-  workflow_dispatch:
+"on": [push, workflow_dispatch]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - name: Check Java
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
+      - name: Test
+        run: echo "Build environment ready"
+        
 
-      - name: Setup Android SDK
+- name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Check project
