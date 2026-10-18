@@ -6,9 +6,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,18 +23,24 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install SDK packages
+      - name: Install Android SDK packages
         run: |
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Build APK
-        run: gradle assembleDebug --stacktrace
+        run: |
+          if [ ! -f gradlew ]; then
+            echo "ERROR: gradlew missing from repository"
+            exit 1
+          fi
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: FR-GEN-AI-APK
+          name: FR-GEN-AI-debug-apk
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
           
