@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -26,6 +26,7 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           cmdline-tools-version: 'latest'
+          packages: ''
 
       - name: Install SDK packages
         run: |
@@ -34,24 +35,19 @@ jobs:
             "platforms;android-35" \
             "build-tools;35.0.0"
 
-      - name: Accept Android licenses
-        run: yes | sdkmanager --licenses || true
-
-      - name: Build Debug APK
+      - name: Build APK
         run: |
-          if [ -f ./gradlew ]; then
-            chmod +x ./gradlew
-            ./gradlew assembleDebug
-          else
-            echo "ERROR: gradlew file missing."
-            echo "Repository files:"
+          if [ ! -f gradlew ]; then
+            echo "ERROR: gradlew missing"
             ls -la
             exit 1
           fi
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
         if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: FR-GEN-AI-APK
           path: app/build/outputs/apk/debug/*.apk
