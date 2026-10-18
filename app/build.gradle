@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace 'com.frgenai.app'
+    namespace 'com.fr.genai'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.frgenai.app'
-        minSdk 23
-        targetSdk 28
+        applicationId 'com.fr.genai'
+        minSdk 24
+        targetSdk 35
         versionCode 1
         versionName '1.0'
     }
